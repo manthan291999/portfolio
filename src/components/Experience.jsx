@@ -2,84 +2,95 @@
 
 import { motion } from "framer-motion";
 import { siteConfig } from "../data/siteConfig";
-import { Briefcase, Calendar, MapPin } from "lucide-react";
+import { Briefcase, Calendar, MapPin, GraduationCap } from "lucide-react";
 
 export default function Experience() {
     return (
-        <section id="experience" className="py-24 bg-darkBg relative">
-            <div className="max-w-4xl mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
-                    Journey
+        <section id="experience" className="py-24 relative z-10">
+            <div className="max-w-5xl mx-auto px-4">
+                <h2 className="text-4xl md:text-5xl font-bold text-center mb-20 font-orbitron">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan to-purple">
+                        CHRONICLES
+                    </span>
                 </h2>
 
-                <div className="space-y-16">
+                <div className="grid md:grid-cols-2 gap-12">
                     {/* Experience */}
-                    <div className="space-y-10">
-                        <h3 className="text-2xl font-semibold flex items-center gap-3 mb-8 text-white">
-                            <Briefcase className="text-primary" /> Professional Experience
+                    <div>
+                        <h3 className="text-2xl font-orbitron flex items-center gap-3 mb-10 text-cyan">
+                            <Briefcase className="text-cyan" /> EXPERIENCE
                         </h3>
-                        {siteConfig.experience.map((exp, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="relative pl-8 border-l-2 border-gray-800 hover:border-primary transition-colors duration-300"
-                            >
-                                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-darkBg border-2 border-primary" />
-                                <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                                    <h4 className="text-xl font-bold text-white">{exp.role}</h4>
-                                    <span className="text-sm text-gray-400 font-medium flex items-center gap-1 bg-gray-900 px-2 py-1 rounded">
-                                        <Calendar size={14} /> {exp.period}
-                                    </span>
-                                </div>
-                                <div className="text-primary font-medium mb-4 flex items-center gap-2">
-                                    {exp.company}
-                                    <span className="text-gray-500 text-sm font-normal flex items-center gap-1">
-                                        <MapPin size={12} /> {exp.location}
-                                    </span>
-                                </div>
-                                <ul className="list-disc list-inside space-y-2 text-gray-400 text-sm leading-relaxed">
-                                    {exp.points.map((point, i) => (
-                                        <li key={i}>{point}</li>
-                                    ))}
-                                </ul>
-                            </motion.div>
-                        ))}
+                        <div className="space-y-12">
+                            {siteConfig.experience.map((exp, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    className="relative pl-8 border-l border-cyan/30 hover:border-cyan transition-colors duration-300 group"
+                                >
+                                    <div className="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-black border border-cyan group-hover:bg-cyan group-hover:shadow-[0_0_10px_rgba(0,243,255,0.8)] transition-all duration-300" />
+
+                                    <div className="mb-2">
+                                        <h4 className="text-xl font-bold text-white group-hover:text-cyan transition-colors">{exp.role}</h4>
+                                        <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
+                                            <span className="text-purple font-medium">{exp.company}</span>
+                                            <span>•</span>
+                                            <span className="flex items-center gap-1"><Calendar size={12} /> {exp.period}</span>
+                                        </div>
+                                    </div>
+
+                                    <ul className="space-y-2 text-gray-400 text-sm leading-relaxed mt-4">
+                                        {exp.points.map((point, i) => (
+                                            <li key={i} className="flex items-start gap-2">
+                                                <span className="text-cyan/50 mt-1">▹</span>
+                                                {point}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Education */}
-                    <div className="space-y-10">
-                        <h3 className="text-2xl font-semibold flex items-center gap-3 mb-8 text-white">
-                            <span className="text-primary text-2xl">🎓</span> Education
+                    <div>
+                        <h3 className="text-2xl font-orbitron flex items-center gap-3 mb-10 text-purple">
+                            <GraduationCap className="text-purple" /> EDUCATION
                         </h3>
-                        {siteConfig.education.map((edu, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="relative pl-8 border-l-2 border-gray-800 hover:border-gray-600 transition-colors duration-300"
-                            >
-                                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-darkBg border-2 border-gray-600" />
-                                <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                                    <h4 className="text-xl font-bold text-white">{edu.degree}</h4>
-                                    <span className="text-sm text-gray-400 font-medium bg-gray-900 px-2 py-1 rounded">
-                                        {edu.year}
-                                    </span>
-                                </div>
-                                <div className="text-gray-300 font-medium mb-4">
-                                    {edu.institution}
-                                </div>
-                                <ul className="list-disc list-inside space-y-2 text-gray-400 text-sm leading-relaxed">
-                                    {edu.details.map((detail, i) => (
-                                        <li key={i}>{detail}</li>
-                                    ))}
-                                </ul>
-                            </motion.div>
-                        ))}
+                        <div className="space-y-12">
+                            {siteConfig.education.map((edu, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    className="relative pl-8 border-l border-purple/30 hover:border-purple transition-colors duration-300 group"
+                                >
+                                    <div className="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-black border border-purple group-hover:bg-purple group-hover:shadow-[0_0_10px_rgba(188,19,254,0.8)] transition-all duration-300" />
+
+                                    <div className="mb-2">
+                                        <h4 className="text-xl font-bold text-white group-hover:text-purple transition-colors">{edu.degree}</h4>
+                                        <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
+                                            <span className="text-cyan font-medium">{edu.institution}</span>
+                                            <span>•</span>
+                                            <span>{edu.year}</span>
+                                        </div>
+                                    </div>
+
+                                    <ul className="space-y-2 text-gray-400 text-sm leading-relaxed mt-4">
+                                        {edu.details.map((detail, i) => (
+                                            <li key={i} className="flex items-start gap-2">
+                                                <span className="text-purple/50 mt-1">▹</span>
+                                                {detail}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,16 @@
+import { Inter, Orbitron } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "../data/siteConfig";
 import Navbar from "../components/Navbar";
-import Background from "../components/Background";
+import ThreeBackground from "../components/ThreeBackground";
 import Cursor from "../components/Cursor";
+import AIChatbot from "../components/AIChatbot";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const orbitron = Orbitron({ subsets: ["latin"], variable: "--font-orbitron" });
 
 export const metadata = {
-  title: `${siteConfig.name} – Portfolio`,
+  title: `${siteConfig.name} – AI Engineer Portfolio`,
   description: siteConfig.tagline,
   openGraph: {
     title: siteConfig.name,
@@ -24,12 +29,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className="bg-darkBg text-gray-100 antialiased selection:bg-primary/30 selection:text-white relative">
-        <Background />
+    <html lang="en" className="scroll-smooth dark">
+      <body className={`${inter.variable} ${orbitron.variable} bg-black text-white antialiased selection:bg-cyan/30 selection:text-cyan relative overflow-x-hidden`}>
+        <ThreeBackground />
         <Cursor />
         <Navbar />
-        {children}
+        <AIChatbot />
+        <main className="relative z-10">
+          {children}
+        </main>
       </body>
     </html>
   );

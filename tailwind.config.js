@@ -9,24 +9,33 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: "#0ea5e9",
-                darkBg: "#0a0a0a", // Darker background for AI feel
-                lightBg: "#ffffff",
-                accent: "#6366f1", // Indigo accent
+                cyan: {
+                    DEFAULT: '#00f3ff',
+                    dim: '#00f3ff80',
+                },
+                purple: {
+                    DEFAULT: '#bc13fe',
+                    dim: '#bc13fe80',
+                },
+                black: {
+                    DEFAULT: '#050505',
+                    surface: '#0a0a0a',
+                },
             },
             fontFamily: {
-                sans: ["Inter", "system-ui", "sans-serif"],
+                orbitron: ['var(--font-orbitron)', 'sans-serif'],
+                inter: ['var(--font-inter)', 'sans-serif'],
             },
             animation: {
+                'spin-slow': 'spin 10s linear infinite',
                 'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                'blob': 'blob 7s infinite',
+                'glitch': 'glitch 1s linear infinite',
             },
             keyframes: {
-                blob: {
-                    '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                    '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                    '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                    '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                glitch: {
+                    '2%, 64%': { transform: 'translate(2px,0) skew(0deg)' },
+                    '4%, 60%': { transform: 'translate(-2px,0) skew(0deg)' },
+                    '62%': { transform: 'translate(0,0) skew(5deg)' },
                 },
             },
         },

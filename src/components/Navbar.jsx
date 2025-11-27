@@ -2,89 +2,53 @@
 
 import { useState, useEffect } from "react";
 import { siteConfig } from "../data/siteConfig";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import Logo from "./Logo";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
-    const [mounted, setMounted] = useState(false);
-    const [isDark, setIsDark] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
-        const saved = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        if (saved === "dark" || (!saved && prefersDark)) {
-            setIsDark(true);
-            document.documentElement.classList.add("dark");
-        } else {
-            setIsDark(false);
-            document.documentElement.classList.remove("dark");
-        }
+        const handleScroll = () => setScrolled(window.scrollY > 50);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const toggleTheme = () => {
-        if (isDark) {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-            setIsDark(false);
-        } else {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-            setIsDark(true);
-        }
-    };
-
-    if (!mounted) return null;
-
     const links = [
-        { name: "Home", href: "#" },
-        { name: "About", href: "#about" },
-        { name: "Skills", href: "#skills" },
-        { name: "Experience", href: "#experience" },
-        { name: "Projects", href: "#projects" },
-        { name: "Contact", href: "#contact" },
+        { name: "HOME", href: "#" },
+        { name: "ABOUT", href: "#about" },
+        { name: "SKILLS", href: "#skills" },
+        { name: "EXPERIENCE", href: "#experience" },
+        { name: "PROJECTS", href: "#projects" },
+        { name: "CONTACT", href: "#contact" },
     ];
 
     return (
-        <header className="sticky top-0 z-50 bg-white/80 dark:bg-darkBg/80 backdrop-blur-md shadow-sm transition-colors duration-300 border-b border-gray-200 dark:border-gray-800">
-            <nav className="max-w-6xl mx-auto flex items-center justify-between p-4">
-                <Link href="/" className="text-2xl font-bold text-primary tracking-tighter">
-                    {siteConfig.name}
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-md border-b border-cyan/20 py-2" : "bg-transparent py-4"}`}>
+            <nav className="max-w-7xl mx-auto flex items-center justify-between px-6">
+                <Link href="/" className="flex items-center gap-3 text-2xl font-bold font-orbitron text-white tracking-widest group">
+                    <Logo className="w-10 h-10 group-hover:rotate-180 transition-transform duration-700" />
+                    <span>{siteConfig.name.split(" ")[0]}<span className="text-cyan">.AI</span></span>
                 </Link>
 
                 {/* Desktop */}
-                <ul className="hidden md:flex space-x-6 items-center">
+                <ul className="hidden md:flex space-x-8 items-center">
                     {links.map((l) => (
                         <li key={l.name}>
-                            <Link href={l.href} className="hover:text-primary transition font-medium text-sm uppercase tracking-wide">
+                            <Link href={l.href} className="relative text-sm font-orbitron text-gray-400 hover:text-cyan transition-colors tracking-wider group">
                                 {l.name}
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan transition-all group-hover:w-full"></span>
                             </Link>
                         </li>
                     ))}
-                    <li>
-                        <button
-                            onClick={toggleTheme}
-                            aria-label="Toggle theme"
-                            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-                        >
-                            {isDark ? <Sun size={20} /> : <Moon size={20} />}
-                        </button>
-                    </li>
                 </ul>
 
                 {/* Mobile */}
-                <div className="flex items-center md:hidden gap-4">
+                <div className="flex items-center md:hidden">
                     <button
-                        onClick={toggleTheme}
-                        aria-label="Toggle theme"
-                        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-                    >
-                        {isDark ? <Sun size={20} /> : <Moon size={20} />}
-                    </button>
-                    <button
-                        className="p-2"
+                        className="p-2 text-cyan"
                         onClick={() => setOpen(!open)}
                         aria-label="Menu"
                     >
@@ -93,19 +57,21 @@ export default function Navbar() {
                 </div>
 
                 {open && (
-                    <ul className="absolute top-full left-0 w-full bg-white dark:bg-darkBg shadow-lg md:hidden border-t dark:border-gray-800">
-                        {links.map((l) => (
-                            <li key={l.name} className="border-b border-gray-100 dark:border-gray-800">
-                                <Link
-                                    href={l.href}
-                                    className="block px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-                                    onClick={() => setOpen(false)}
-                                >
-                                    {l.name}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border-b border-cyan/20 md:hidden">
+                        <ul className="flex flex-col p-4">
+                            {links.map((l) => (
+                                <li key={l.name} className="border-b border-gray-800 last:border-0">
+                                    <Link
+                                        href={l.href}
+                                        className="block px-4 py-4 font-orbitron text-gray-300 hover:text-cyan hover:bg-white/5 transition tracking-widest"
+                                        onClick={() => setOpen(false)}
+                                    >
+                                        {l.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 )}
             </nav>
         </header>
