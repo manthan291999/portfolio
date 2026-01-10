@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useEffect, useMemo } from "react";
-import { useFrame, useLoader } from "@react-three/fiber";
-import { useFBX, Float, Environment } from "@react-three/drei";
+import { useRef, useEffect, useState } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useFBX, Float, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
 // Floating Sci-Fi Pedestal Component
@@ -78,33 +78,27 @@ const FloatingPedestal = ({ position = [0, 0, 0] }) => {
 const RobotModel = ({ isMobile }) => {
     const groupRef = useRef();
     const mixerRef = useRef();
+    const [materialsApplied, setMaterialsApplied] = useState(false);
 
     // Load the FBX model
-    const fbx = useFBX("/source/Orange black sci fi unit2 rigged and animated.fbx");
+    const fbx = useFBX("/source/robot-model.fbx");
 
-    // Load textures using useLoader for proper texture loading
-    const [
-        bodyDiffuse,
-        bodyNormal,
-        bodyMetallic,
-        bodyRoughness,
-        matDiffuse,
-        matNormal,
-        matMetallic,
-        matRoughness
-    ] = useLoader(THREE.TextureLoader, [
-        "/textures/Body3_Diffuse.png",
-        "/textures/Body3_Normal.png",
-        "/textures/Body3_metallic.png",
-        "/textures/Body3_roughness.png",
-        "/textures/material_0_Merged0_LOD0_Bake_Diffuse.png",
-        "/textures/material_0_Merged0_LOD0_Bake_Normal.png",
-        "/textures/material_0_Merged0_LOD0_Bake_metallic.png",
-        "/textures/material_0_Merged0_LOD0_Bake_roughness.png",
-    ]);
+    // Load textures using useTexture from drei (handles SSR properly)
+    const textures = useTexture({
+        bodyDiffuse: "/textures/Body3_Diffuse.png",
+        bodyNormal: "/textures/Body3_Normal.png",
+        bodyMetallic: "/textures/Body3_metallic.png",
+        bodyRoughness: "/textures/Body3_roughness.png",
+        matDiffuse: "/textures/material_0_Merged0_LOD0_Bake_Diffuse.png",
+        matNormal: "/textures/material_0_Merged0_LOD0_Bake_Normal.png",
+        matMetallic: "/textures/material_0_Merged0_LOD0_Bake_metallic.png",
+        matRoughness: "/textures/material_0_Merged0_LOD0_Bake_roughness.png",
+    });
 
     // Set up animations and apply textures
     useEffect(() => {
+        if (materialsApplied) return;
+
         // Set up animations
         if (fbx.animations && fbx.animations.length > 0) {
             mixerRef.current = new THREE.AnimationMixer(fbx);
@@ -113,9 +107,8 @@ const RobotModel = ({ isMobile }) => {
         }
 
         // Configure textures
-        [bodyDiffuse, matDiffuse].forEach(tex => {
-            tex.colorSpace = THREE.SRGBColorSpace;
-        });
+        if (textures.bodyDiffuse) textures.bodyDiffuse.colorSpace = THREE.SRGBColorSpace;
+        if (textures.matDiffuse) textures.matDiffuse.colorSpace = THREE.SRGBColorSpace;
 
         // Apply materials to the model
         fbx.traverse((child) => {
@@ -129,10 +122,10 @@ const RobotModel = ({ isMobile }) => {
 
                 // Create PBR material with loaded textures
                 const newMaterial = new THREE.MeshStandardMaterial({
-                    map: isBody ? bodyDiffuse : matDiffuse,
-                    normalMap: isBody ? bodyNormal : matNormal,
-                    metalnessMap: isBody ? bodyMetallic : matMetallic,
-                    roughnessMap: isBody ? bodyRoughness : matRoughness,
+                    map: isBody ? textures.bodyDiffuse : textures.matDiffuse,
+                    normalMap: isBody ? textures.bodyNormal : textures.matNormal,
+                    metalnessMap: isBody ? textures.bodyMetallic : textures.matMetallic,
+                    roughnessMap: isBody ? textures.bodyRoughness : textures.matRoughness,
                     metalness: 1.0,
                     roughness: 1.0,
                     envMapIntensity: 2.0,
@@ -141,7 +134,9 @@ const RobotModel = ({ isMobile }) => {
                 child.material = newMaterial;
             }
         });
-    }, [fbx, bodyDiffuse, bodyNormal, bodyMetallic, bodyRoughness, matDiffuse, matNormal, matMetallic, matRoughness]);
+
+        setMaterialsApplied(true);
+    }, [fbx, textures, materialsApplied]);
 
     // Animation loop
     useFrame((state, delta) => {
