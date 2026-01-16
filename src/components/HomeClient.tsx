@@ -9,44 +9,44 @@ import Experience from "../components/Experience";
 import Projects from "../components/Projects";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
+import LoadingScreen from "../components/LoadingScreen";
 
 // Dynamically import Welcome Page (heavy 3D component)
 const WelcomePage = dynamic(
     () => import("../components/WelcomePage"),
     {
         ssr: false,
-        loading: () => (
-            <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-                <div className="text-cyan font-mono animate-pulse">LOADING SYSTEM...</div>
-            </div>
-        )
+        loading: () => <LoadingScreen />
     }
 );
 
 export default function HomeClient() {
     const [showWelcome, setShowWelcome] = useState(true);
     const [mounted, setMounted] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setMounted(true);
-        // Optional: Check if user has visited before
-        // const hasVisited = localStorage.getItem('hasVisitedBefore');
-        // if (hasVisited) setShowWelcome(false);
+        // Check if user has visited before - skip welcome page if they have
+        const hasVisited = localStorage.getItem('hasVisitedBefore');
+        if (hasVisited) {
+            setShowWelcome(false);
+        }
     }, []);
 
     const handleEnter = () => {
         setShowWelcome(false);
-        // Optional: Remember that user has visited
-        // localStorage.setItem('hasVisitedBefore', 'true');
+        // Remember that user has visited
+        localStorage.setItem('hasVisitedBefore', 'true');
     };
 
-    // Prevent hydration mismatch
-    if (!mounted) {
-        return (
-            <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-                <div className="text-cyan font-mono animate-pulse">LOADING SYSTEM...</div>
-            </div>
-        );
+    const handleLoadComplete = () => {
+        setIsLoading(false);
+    };
+
+    // Show loading screen while mounting
+    if (!mounted || isLoading) {
+        return <LoadingScreen onLoadComplete={handleLoadComplete} minDuration={2500} />;
     }
 
     return (

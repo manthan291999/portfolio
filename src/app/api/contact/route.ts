@@ -1,8 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req) {
+interface ContactPayload {
+    name: string;
+    email: string;
+    message: string;
+}
+
+export async function POST(req: NextRequest) {
     try {
-        const payload = await req.json();
+        const payload: ContactPayload = await req.json();
 
         // Basic validation
         if (!payload.name || !payload.email || !payload.message) {

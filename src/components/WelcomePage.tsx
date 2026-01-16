@@ -1,3 +1,5 @@
+// @ts-nocheck
+/// <reference types="@react-three/fiber" />
 "use client";
 
 import { useRef, useMemo, useState, useEffect, Suspense } from "react";

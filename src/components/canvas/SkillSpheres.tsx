@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useRef, useMemo } from "react";
@@ -199,3 +200,4 @@ const SkillSpheres = () => {
 };
 
 export default SkillSpheres;
+

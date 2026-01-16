@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useRef, useMemo, useState } from "react";
@@ -288,3 +289,4 @@ const NeuralNetwork3D = () => {
 };
 
 export default NeuralNetwork3D;
+

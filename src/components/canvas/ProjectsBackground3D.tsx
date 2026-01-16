@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useRef, useMemo } from "react";
@@ -271,3 +272,4 @@ const ProjectsBackground3D = () => {
 };
 
 export default ProjectsBackground3D;
+

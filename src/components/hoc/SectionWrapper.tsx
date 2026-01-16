@@ -1,18 +1,19 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
+import { ComponentType } from "react";
 
-const staggerContainer = (staggerChildren, delayChildren) => ({
+const staggerContainer = (staggerChildren = 0.1, delayChildren = 0): Variants => ({
     hidden: {},
     show: {
         transition: {
-            staggerChildren: staggerChildren || 0.1,
-            delayChildren: delayChildren || 0,
+            staggerChildren,
+            delayChildren,
         },
     },
 });
 
-const fadeIn = (direction, type, delay, duration) => ({
+const fadeIn = (direction: string, type: string, delay: number, duration: number): Variants => ({
     hidden: {
         x: direction === "left" ? 100 : direction === "right" ? -100 : 0,
         y: direction === "up" ? 100 : direction === "down" ? -100 : 0,
@@ -31,7 +32,7 @@ const fadeIn = (direction, type, delay, duration) => ({
     },
 });
 
-const slideIn = (direction, type, delay, duration) => ({
+const slideIn = (direction: string, type: string, delay: number, duration: number): Variants => ({
     hidden: {
         x: direction === "left" ? "-100%" : direction === "right" ? "100%" : 0,
         y: direction === "up" ? "100%" : direction === "down" ? "-100%" : 0,
@@ -48,7 +49,7 @@ const slideIn = (direction, type, delay, duration) => ({
     },
 });
 
-const zoomIn = (delay, duration) => ({
+const zoomIn = (delay: number, duration: number): Variants => ({
     hidden: {
         scale: 0,
         opacity: 0,
@@ -65,7 +66,7 @@ const zoomIn = (delay, duration) => ({
     },
 });
 
-const textVariant = (delay) => ({
+const textVariant = (delay: number): Variants => ({
     hidden: {
         y: -50,
         opacity: 0,
@@ -82,8 +83,12 @@ const textVariant = (delay) => ({
 });
 
 // Higher Order Component
-const SectionWrapper = (Component, idName, className = "") => {
-    function HOC(props) {
+const SectionWrapper = <P extends object>(
+    Component: ComponentType<P>,
+    idName: string,
+    className: string = ""
+) => {
+    function HOC(props: P) {
         return (
             <motion.section
                 variants={staggerContainer()}

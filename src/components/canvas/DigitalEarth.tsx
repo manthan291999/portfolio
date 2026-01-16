@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useRef, useMemo } from "react";
@@ -287,3 +288,4 @@ const DigitalEarth = () => {
 };
 
 export default DigitalEarth;
+

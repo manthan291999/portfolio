@@ -4,10 +4,10 @@ import { useEffect } from "react";
 
 export default function Cursor() {
     useEffect(() => {
-        const cursorDot = document.querySelector(".cursor-dot");
-        const cursorOutline = document.querySelector(".cursor-outline");
+        const cursorDot = document.querySelector(".cursor-dot") as HTMLElement | null;
+        const cursorOutline = document.querySelector(".cursor-outline") as HTMLElement | null;
 
-        const moveCursor = (e) => {
+        const moveCursor = (e: MouseEvent) => {
             const posX = e.clientX;
             const posY = e.clientY;
 

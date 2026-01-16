@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useRef, useMemo } from "react";
@@ -126,3 +127,4 @@ const CyberPlanet = ({ mousePosition }) => {
 };
 
 export default CyberPlanet;
+

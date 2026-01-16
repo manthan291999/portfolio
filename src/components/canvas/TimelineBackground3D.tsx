@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useRef, useMemo } from "react";
@@ -256,3 +257,4 @@ const TimelineBackground3D = () => {
 };
 
 export default TimelineBackground3D;
+

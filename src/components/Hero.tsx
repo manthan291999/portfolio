@@ -8,8 +8,8 @@ import { ArrowRight, Download, Terminal } from "lucide-react";
 import ResumeGate from "./ResumeGate";
 
 // Dynamically import the 3D canvas to avoid SSR issues
-const ComputersCanvas = dynamic(
-    () => import("./canvas/ComputersCanvas"),
+const RobotHero = dynamic(
+    () => import("./canvas/RobotHero"),
     {
         ssr: false,
         loading: () => (
@@ -47,7 +47,7 @@ export default function Hero() {
 
                 {/* 3D Model Container - Positioned Right */}
                 <div className="absolute right-0 top-0 w-full md:w-1/2 h-full">
-                    <ComputersCanvas />
+                    <RobotHero />
                 </div>
             </div>
 

@@ -1,7 +1,9 @@
-export const siteConfig = {
+import { SiteConfig } from "../types";
+
+export const siteConfig: SiteConfig = {
     // ── Personal Info ─────────────────────────────────────
     name: "Manthan Mittal",
-    tagline: "AI Engineer • Full‑Stack Developer • Creator",
+    tagline: "AI Engineer . Software Engineering",
     location: "Ahmedabad, India",
     phone: "+91 8200681650",
     email: "manthanmittal93@gmail.com",
@@ -28,8 +30,8 @@ export const siteConfig = {
 
     // ── About ────────────────────────────────────────────
     about: [
-        "I exist at the intersection of scalable engineering and bleeding-edge AI. As a Full-Stack AI Engineer, I don’t just train models—I build autonomous systems that solve hard problems. My technical philosophy is grounded in the belief that true innovation happens only when robust software engineering practices are fused with advanced artificial intelligence.",
-        "My background is rigorous and diverse, spanning from optimizing mobile architectures for speed to researching complex Deep Learning systems during my M.Sc. in the UK. This academic focus culminated in my thesis on \"Random MAC Optimization,\" where I investigated novel strategies to push the boundaries of algorithmic efficiency and model convergence in resource-constrained environments.",
+        "I exist at the intersection of scalable engineering and bleeding-edge AI. As a Full-Stack AI Engineer, I don't just train models—I build autonomous systems that solve hard problems. My technical philosophy is grounded in the belief that true innovation happens only when robust software engineering practices are fused with advanced artificial intelligence.",
+        "My background is rigorous and diverse, spanning from optimizing mobile architectures for speed to researching complex Deep Learning systems during my M.Sc. in the UK. This academic focus culminated in my thesis on 'Random MAC Optimization,' where I investigated novel strategies to push the boundaries of algorithmic efficiency and model convergence in resource-constrained environments.",
         "Beyond theory, my work is backed by data and community impact. I have developed open-source tools used by thousands of developers and architected production-grade RAG pipelines. Whether it involves deploying large-scale web agents or optimizing neural networks for robotics, I am dedicated to building software that thinks."
     ],
 
@@ -41,7 +43,7 @@ export const siteConfig = {
             year: "2022 – 2024",
             details: [
                 "Specializations: Deep Learning, Robotics, Computer Vision, Natural Language Processing (NLP), and Machine Learning.",
-                "Master’s Thesis: “Random MAC Optimization” – Investigated optimization algorithms to enhance model convergence and efficiency.",
+                "Master's Thesis: 'Random MAC Optimization' – Investigated optimization algorithms to enhance model convergence and efficiency.",
             ],
         },
         {

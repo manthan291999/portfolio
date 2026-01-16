@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { Html, useProgress } from "@react-three/drei";
@@ -44,3 +45,4 @@ const CanvasLoader = () => {
 };
 
 export default CanvasLoader;
+

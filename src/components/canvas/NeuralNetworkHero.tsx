@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useRef, useMemo, useState, useEffect } from "react";
@@ -496,3 +497,4 @@ const NeuralNetworkHero = ({ mousePosition }) => {
 };
 
 export default NeuralNetworkHero;
+
