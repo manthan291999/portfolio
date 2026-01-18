@@ -4,7 +4,7 @@
 import { Suspense, useRef, useEffect, useMemo, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls, Environment, Preload } from "@react-three/drei";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import * as THREE from "three";
 
 // Floating Sci-Fi Pedestal Component
@@ -94,11 +94,10 @@ const FloatingPedestal = () => {
 const RobotModel = ({ scale = 0.01, onLoaded }) => {
     const groupRef = useRef();
     const innerGroupRef = useRef();
-    const mixerRef = useRef();
     const baseY = -1.35; // Position on top of pedestal (pedestal is at -1.5)
 
-    // Load the FBX model
-    const fbx = useLoader(FBXLoader, "/source/orange-unit.fbx");
+    // Load the OBJ model from /source folder
+    const obj = useLoader(OBJLoader, "/source/low.zip/low.obj");
 
     // Load textures
     const textureLoader = useMemo(() => new THREE.TextureLoader(), []);
@@ -114,79 +113,64 @@ const RobotModel = ({ scale = 0.01, onLoaded }) => {
         };
 
         return {
-            // Body textures
-            bodyDiffuse: loadTexture("/textures/Body3_Diffuse.png", true),
-            bodyNormal: loadTexture("/textures/Body3_Normal.png", true),
-            bodyMetallic: loadTexture("/textures/Body3_metallic.png", true),
-            bodyRoughness: loadTexture("/textures/Body3_roughness.png", true),
-            // Material textures
-            matDiffuse: loadTexture("/textures/material_0_Merged0_LOD0_Bake_Diffuse.png", true),
-            matNormal: loadTexture("/textures/material_0_Merged0_LOD0_Bake_Normal.png", true),
-            matMetallic: loadTexture("/textures/material_0_Merged0_LOD0_Bake_metallic.png", true),
-            matRoughness: loadTexture("/textures/material_0_Merged0_LOD0_Bake_roughness.png", true),
+            // Textures from /textures folder - flipY false for OBJ models
+            albedo: loadTexture("/textures/4k_albedo.jpg", false),
+            normal: loadTexture("/textures/4k_Normal.jpg", false),
+            specular: loadTexture("/textures/4k_Specular.jpg", false),
+            gloss: loadTexture("/textures/4k_Gloss.jpg", false),
+            ao: loadTexture("/textures/4k_AO_01.jpg", false),
         };
     }, [textureLoader]);
 
-    // Apply materials, textures, rotation fix and setup animations
+    // Apply materials, textures, rotation fix and setup
     useEffect(() => {
-        if (fbx) {
-            // Fix rotation - rotate the model to stand upright
-            // FBX models often export with Z-up, we need Y-up
-            fbx.rotation.set(-Math.PI / 2, 0, 0);
+        if (obj) {
+            // Clone the object to avoid mutation issues
+            const model = obj.clone();
 
             // Center the model
-            const box = new THREE.Box3().setFromObject(fbx);
+            const box = new THREE.Box3().setFromObject(model);
             const center = box.getCenter(new THREE.Vector3());
-            fbx.position.x = -center.x;
-            fbx.position.z = -center.z;
+            model.position.x = -center.x;
+            model.position.z = -center.z;
             // Adjust so feet are at y=0 of the group
-            fbx.position.y = -box.min.y;
+            model.position.y = -box.min.y;
 
-            // Setup animation mixer if model has animations
-            if (fbx.animations && fbx.animations.length > 0) {
-                mixerRef.current = new THREE.AnimationMixer(fbx);
-                const action = mixerRef.current.clipAction(fbx.animations[0]);
-                action.play();
-            }
-
-            let meshIndex = 0;
-            fbx.traverse((child) => {
+            model.traverse((child) => {
                 if (child.isMesh) {
                     // Enable shadows
                     child.castShadow = true;
                     child.receiveShadow = true;
 
-                    // Alternate between texture sets for different parts
-                    const useBodyTextures = meshIndex % 2 === 0;
-                    meshIndex++;
-
+                    // Apply textures from /textures folder
                     child.material = new THREE.MeshStandardMaterial({
-                        map: useBodyTextures ? textures.bodyDiffuse : textures.matDiffuse,
-                        normalMap: useBodyTextures ? textures.bodyNormal : textures.matNormal,
-                        metalnessMap: useBodyTextures ? textures.bodyMetallic : textures.matMetallic,
-                        roughnessMap: useBodyTextures ? textures.bodyRoughness : textures.matRoughness,
-                        metalness: 0.8,
-                        roughness: 0.3,
+                        map: textures.albedo,
+                        normalMap: textures.normal,
+                        aoMap: textures.ao,
+                        roughnessMap: textures.gloss, // Gloss is inverse of roughness
+                        metalness: 0.7,
+                        roughness: 0.4,
                         envMapIntensity: 1.5,
                         side: THREE.DoubleSide,
                     });
                 }
             });
 
+            // Replace the object in the scene
+            if (innerGroupRef.current) {
+                innerGroupRef.current.clear();
+                innerGroupRef.current.add(model);
+            }
+
             // Notify parent that robot is loaded
             if (onLoaded) {
                 onLoaded();
             }
         }
-    }, [fbx, textures, onLoaded]);
+    }, [obj, textures, onLoaded]);
 
     // Animation loop: 360° rotation + jumping
     useFrame((state, delta) => {
-        // Update FBX animation mixer
-        if (mixerRef.current) {
-            mixerRef.current.update(delta);
-        }
-
         if (groupRef.current) {
             // Continuous 360° rotation (rotate the outer group)
             groupRef.current.rotation.y += 0.008;
@@ -214,7 +198,7 @@ const RobotModel = ({ scale = 0.01, onLoaded }) => {
     return (
         <group ref={groupRef} position={[0, baseY, 0]}>
             <group ref={innerGroupRef} scale={scale}>
-                <primitive object={fbx} />
+                {/* Model will be added via useEffect */}
             </group>
         </group>
     );
@@ -373,7 +357,7 @@ const RobotHero = () => {
                     <FloatingPedestal />
 
                     {/* Robot Model */}
-                    <RobotModel scale={0.012} onLoaded={handleRobotLoaded} />
+                    <RobotModel scale={0.8} onLoaded={handleRobotLoaded} />
 
                     {/* Environment for reflections */}
                     <Environment preset="city" />
@@ -396,4 +380,3 @@ const RobotHero = () => {
 };
 
 export default RobotHero;
-
