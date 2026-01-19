@@ -549,7 +549,7 @@ export default function WelcomePage({ onEnter }) {
                             >
                                 <span className="h-px w-12 bg-gradient-to-r from-transparent to-cyan" />
                                 <span className="text-gray-400 font-mono text-sm tracking-widest">
-                                    AI ENGINEER • FULL-STACK DEVELOPER
+                                    AI ENGINEER • SOFTWARE DEVELOPER
                                 </span>
                                 <span className="h-px w-12 bg-gradient-to-l from-transparent to-purple" />
                             </motion.div>
