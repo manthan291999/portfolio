@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    output: 'export', // Static export for Cloudflare Pages direct upload
+    // Note: Removed 'output: export' for Vercel deployment
+    // Vercel handles server-side rendering natively
     trailingSlash: true,
     images: {
-        unoptimized: true, // Required for static export
+        // Using Next.js Image Optimization on Vercel
         remotePatterns: [
             {
                 protocol: 'https',

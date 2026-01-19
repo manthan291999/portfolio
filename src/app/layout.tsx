@@ -36,8 +36,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth dark">
-            <body className={`${inter.variable} ${orbitron.variable} bg-black text-white antialiased selection:bg-cyan/30 selection:text-cyan relative overflow-x-hidden`}>
+        <html lang="en" className="scroll-smooth dark" suppressHydrationWarning>
+            <body suppressHydrationWarning className={`${inter.variable} ${orbitron.variable} bg-black text-white antialiased selection:bg-cyan/30 selection:text-cyan relative overflow-x-hidden`}>
                 <ThreeBackground />
                 <Cursor />
                 <Navbar />

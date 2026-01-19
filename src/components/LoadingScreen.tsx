@@ -215,19 +215,40 @@ export default function LoadingScreen({
             <div className="absolute bottom-4 left-4 w-16 h-16 border-l-2 border-b-2 border-purple/30" />
             <div className="absolute bottom-4 right-4 w-16 h-16 border-r-2 border-b-2 border-purple/30" />
 
-            {/* Floating Particles */}
+            {/* Floating Particles - using fixed positions to avoid hydration mismatch */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                {[...Array(20)].map((_, i) => (
+                {[
+                    { left: 15, top: 25, color: '#00f3ff', duration: 4.5, delay: 0.2 },
+                    { left: 85, top: 10, color: '#bc13fe', duration: 5.2, delay: 1.1 },
+                    { left: 45, top: 80, color: '#00f3ff', duration: 3.8, delay: 0.5 },
+                    { left: 22, top: 55, color: '#bc13fe', duration: 6.1, delay: 1.8 },
+                    { left: 78, top: 42, color: '#00f3ff', duration: 4.2, delay: 0.3 },
+                    { left: 10, top: 88, color: '#bc13fe', duration: 5.5, delay: 1.5 },
+                    { left: 92, top: 68, color: '#00f3ff', duration: 3.5, delay: 0.8 },
+                    { left: 55, top: 15, color: '#bc13fe', duration: 4.8, delay: 0.1 },
+                    { left: 38, top: 92, color: '#00f3ff', duration: 5.8, delay: 1.2 },
+                    { left: 68, top: 35, color: '#bc13fe', duration: 4.0, delay: 0.6 },
+                    { left: 5, top: 48, color: '#00f3ff', duration: 5.0, delay: 1.0 },
+                    { left: 95, top: 22, color: '#bc13fe', duration: 3.9, delay: 1.7 },
+                    { left: 30, top: 72, color: '#00f3ff', duration: 4.6, delay: 0.4 },
+                    { left: 62, top: 58, color: '#bc13fe', duration: 5.3, delay: 1.4 },
+                    { left: 82, top: 85, color: '#00f3ff', duration: 4.1, delay: 0.9 },
+                    { left: 18, top: 12, color: '#bc13fe', duration: 5.6, delay: 0.7 },
+                    { left: 50, top: 45, color: '#00f3ff', duration: 3.7, delay: 1.3 },
+                    { left: 72, top: 78, color: '#bc13fe', duration: 4.4, delay: 1.6 },
+                    { left: 35, top: 32, color: '#00f3ff', duration: 5.1, delay: 0.0 },
+                    { left: 88, top: 52, color: '#bc13fe', duration: 4.3, delay: 1.9 },
+                ].map((particle, i) => (
                     <div
                         key={i}
                         className="absolute w-1 h-1 rounded-full"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            backgroundColor: i % 2 === 0 ? '#00f3ff' : '#bc13fe',
+                            left: `${particle.left}%`,
+                            top: `${particle.top}%`,
+                            backgroundColor: particle.color,
                             opacity: 0.6,
-                            animation: `floatParticle ${3 + Math.random() * 4}s ease-in-out infinite`,
-                            animationDelay: `${Math.random() * 2}s`
+                            animation: `floatParticle ${particle.duration}s ease-in-out infinite`,
+                            animationDelay: `${particle.delay}s`
                         }}
                     />
                 ))}
