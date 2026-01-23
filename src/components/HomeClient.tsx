@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Hero from "../components/Hero";
 import About from "../components/About";
+import GlobalReach from "../components/GlobalReach";
 import Skills from "../components/Skills";
 import Experience from "../components/Experience";
 import Projects from "../components/Projects";
@@ -61,6 +62,7 @@ export default function HomeClient() {
                 <Skills />
                 <Experience />
                 <Projects />
+                <GlobalReach />
                 <Contact />
                 <Footer />
             </main>
